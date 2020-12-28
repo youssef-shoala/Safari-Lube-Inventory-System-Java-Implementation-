@@ -42,6 +42,7 @@ public class Product {
     
     private static Connection connection;
     private static PreparedStatement addProduct; 
+    private static PreparedStatement removeProduct;
     private static PreparedStatement getInventory; 
 
     
@@ -50,7 +51,6 @@ public class Product {
         connection = DBConnection.getConnection();
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         Product product = null;
-
 
         try
         {
@@ -73,7 +73,21 @@ public class Product {
         return product;
     }
     
-    public static ArrayList<Product> getInventoryByDate(String orderCriteria){
+    public static void removeProduct(int id){
+        connection = DBConnection.getConnection(); 
+            
+        try {
+            removeProduct = connection.prepareStatement("remove from inventory where id = ?");
+            removeProduct.setInt(1, id);
+            removeProduct.executeUpdate(); 
+        }
+        catch(SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        
+    }
+    
+    public static ArrayList<Product> getInventoryByDate(){
         connection = DBConnection.getConnection(); 
         ArrayList<Product> products= new ArrayList<Product>(); 
         
@@ -95,6 +109,21 @@ public class Product {
             sqlException.printStackTrace(); 
         }
         return products;
+    }
+    
+    public static boolean checkInventory(int productID){
+        ArrayList<Product> inventory = getInventoryByDate();
+        boolean inInventory = false;
+        for(int i=0; i<inventory.size(); i++){
+            if(productID == inventory.get(i).getProductID()){
+                //if product were looking for is in inventory return true and break
+            }
+            else{
+                //return false
+            }
+        }
+        return inInventory;
+        
     }
     
     
