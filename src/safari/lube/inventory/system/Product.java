@@ -27,8 +27,9 @@ public class Product {
     private float priceSold; 
     private final java.sql.Timestamp dateAdded; 
     private String location; 
+    private int quantity; 
 
-    public Product(String cls, String type, int productID, float priceBought, float priceSold, Timestamp dateAdded, String location) {
+    public Product(String cls, String type, int productID, float priceBought, float priceSold, Timestamp dateAdded, String location, int quantity) {
         this.cls = cls;
         this.type = type;
         this.productID = productID; 
@@ -36,6 +37,7 @@ public class Product {
         this.priceSold = priceSold;
         this.dateAdded = dateAdded;
         this.location = location;
+        this.quantity = quantity; 
     }
 
     
@@ -47,23 +49,58 @@ public class Product {
 
     
     
-    public static Product addProduct(String cls, String type, int id, float price_bought, float price_sold, String location) {
+    public static Product addProductToInventory(String cls, String type, int id, float price_bought, float price_sold, String location, int quantity) {
         connection = DBConnection.getConnection();
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         Product product = null;
 
         try
         {
-            addProduct = connection.prepareStatement("insert into inventory values (?,?,?,?,?,?,?)");
-            addProduct.setString(1,cls);
-            addProduct.setString(2,type);
-            addProduct.setInt(3,id);
-            addProduct.setFloat(4,price_bought);
-            addProduct.setFloat(5,price_sold);
-            addProduct.setTimestamp(6,currentTimestamp);
-            addProduct.setString(7, location);
-            addProduct.executeUpdate();
-            product = new Product(cls, type, id, price_bought, price_sold,currentTimestamp, location);
+            ArrayList<Product> getInventoryOfType = getInventoryOfType(type);
+            if(getInventoryOfType.size() == 0){
+                addProduct = connection.prepareStatement("insert into inventory values (?,?,?,?,?,?,?,?)");
+                addProduct.setString(1,cls);
+                addProduct.setString(2,type);
+                addProduct.setInt(3,id);
+                addProduct.setFloat(4,price_sold);
+                addProduct.setFloat(5,price_bought);
+                addProduct.setTimestamp(6,currentTimestamp);
+                addProduct.setString(7, location);
+                addProduct.setInt(8,quantity);
+                addProduct.executeUpdate();
+                product = new Product(cls, type, id, price_bought, price_sold,currentTimestamp, location, quantity);
+            }
+            else{
+                boolean added = false;
+                for(int i=0; i<getInventoryOfType.size(); i++){
+                    if(price_bought == getInventoryOfType.get(i).getPriceBought() && location.equals(getInventoryOfType.get(i).getLocation())){
+                        addProduct = connection.prepareStatement("update inventory set quantity = quantity+? where type = ? and price_bought = ? and location = ?");
+                        addProduct.setInt(1, quantity);
+                        addProduct.setString(2, type);
+                        addProduct.setFloat(3, price_bought);
+                        addProduct.setString(4, location);
+                        addProduct.executeUpdate(); 
+                        added = true;
+                        //create product of previously existing item with new quantity
+                        break;
+                    }
+                }
+                if(!added){
+                    addProduct = connection.prepareStatement("insert into inventory values (?,?,?,?,?,?,?,?)");
+                    addProduct.setString(1,cls);
+                    addProduct.setString(2,type);
+                    addProduct.setInt(3,id);
+                    addProduct.setFloat(4,price_sold);
+                    addProduct.setFloat(5,price_bought);
+                    addProduct.setTimestamp(6,currentTimestamp);
+                    addProduct.setString(7, location);
+                    addProduct.setInt(8,quantity);
+                    addProduct.executeUpdate();
+                    product = new Product(cls, type, id, price_bought, price_sold,currentTimestamp, location, quantity);
+                }
+            }
+
+            
         }
         catch(SQLException sqlException)
         {
@@ -73,18 +110,56 @@ public class Product {
         return product;
     }
     
-    public static void removeProduct(int id){
+    public static void removeProductFromInventory(String cls, String type, String location, int quantity){
         connection = DBConnection.getConnection(); 
-            
-        try {
-            removeProduct = connection.prepareStatement("remove from inventory where id = ?");
-            removeProduct.setInt(1, id);
-            removeProduct.executeUpdate(); 
-        }
-        catch(SQLException sqlException){
-            sqlException.printStackTrace();
-        }
+        ArrayList<Product> inventoryByDate = getInventoryByDate();
+        Product productToRemove = null; 
         
+        for(int i=0; i<inventoryByDate.size(); i++){
+            if(cls.equals(inventoryByDate.get(i).getCls()) && type.equals(inventoryByDate.get(i).getType()) && location.equals(inventoryByDate.get(i).getLocation())){
+                productToRemove = inventoryByDate.get(i);
+                break;
+            }
+        }   
+        
+        int quantityInInventory = productToRemove.getQuantity();
+        int idOfProduct = productToRemove.getProductID();
+        
+        if(productToRemove != null){
+            if(quantityInInventory > quantity){
+                //reduce quantity
+                try{
+                    //update inventory set quantity = quantity-? where type = ? and price_bought = ? and location = ?
+                    removeProduct = connection.prepareStatement("update inventory set quantity = quantity - ? where ID = ? ");
+                    removeProduct.setInt(1, quantity); 
+                    removeProduct.setInt(2, idOfProduct);
+                    removeProduct.executeUpdate(); 
+                }
+                catch(SQLException sqlException)
+                {
+                    sqlException.printStackTrace();
+                }
+            }
+
+            else if(quantityInInventory == quantity){
+                try{
+                    removeProduct = connection.prepareStatement("remove from inventory where id = ?");
+                    removeProduct.setInt(1, idOfProduct);
+                    removeProduct.executeUpdate(); 
+                }
+                catch(SQLException sqlException)
+                {
+                    sqlException.printStackTrace();
+                }
+            }
+
+            else{
+                System.out.println("Not enough quantity in inventory");
+            }
+        }
+        else{
+                System.out.println("This doesnt exist in inventory");
+            }
     }
     
     public static ArrayList<Product> getInventoryByDate(){
@@ -98,10 +173,11 @@ public class Product {
                 products.add(new Product(resultSet.getString("Class"), 
                                              resultSet.getString("Type"), 
                                              resultSet.getInt("ID"), 
-                                             resultSet.getFloat("Price_Sold"),
                                              resultSet.getFloat("Price_Bought"),
+                                             resultSet.getFloat("Price_Sold"),
                                              resultSet.getTimestamp("Date_Added"), 
-                                             resultSet.getString("Location")));
+                                             resultSet.getString("Location"),
+                                             resultSet.getInt("quantity")));
             }
             
         }
@@ -111,29 +187,34 @@ public class Product {
         return products;
     }
     
-    public static boolean checkInventory(int productID){
+    public static boolean checkInventoryByID(int productID){
         ArrayList<Product> inventory = getInventoryByDate();
         boolean inInventory = false;
         for(int i=0; i<inventory.size(); i++){
             if(productID == inventory.get(i).getProductID()){
-                //if product were looking for is in inventory return true and break
-            }
-            else{
-                //return false
+                inInventory = true; 
+                break; 
             }
         }
-        return inInventory;
         
+        return inInventory;
+    }
+    
+    public static ArrayList<Product> getInventoryOfType(String type){
+        ArrayList<Product> inventory = getInventoryByDate(); 
+        ArrayList<Product> allProductsOfType = new ArrayList(); 
+        for(int i=0; i<inventory.size(); i++){
+            if (type.equals(inventory.get(i).getType())){
+                allProductsOfType.add(inventory.get(i));
+            }
+        }
+        return allProductsOfType; 
     }
     
     
     
     public String getLocation() {
         return location;
-    }
-    
-    public void setPriceSold(int price) {
-        this.priceSold = price; 
     }
     
     public int getProductID() {
@@ -159,5 +240,10 @@ public class Product {
     public String getType() {
         return type;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+    
     
 }

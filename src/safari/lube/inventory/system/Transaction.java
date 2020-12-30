@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 /**
  *
@@ -16,35 +17,40 @@ import java.sql.Timestamp;
  */
 public class Transaction {
     private final int productID;
-    private final int priceSold; 
+    private final float priceSold; 
     private final Timestamp timestamp; 
     private final String seller; 
     private final String location; 
+    private final int quantity;
 
-    public Transaction(int productID, int priceSold, Timestamp timestamp, String seller, String location) {
+    public Transaction(int productID, float priceSold, Timestamp timestamp, String seller, String location, int quantity) {
         this.productID = productID;
         this.priceSold = priceSold;
         this.timestamp = timestamp;
         this.seller = seller;
         this.location = location; 
+        this.quantity = quantity;
     }
     
     private static Connection connection;
     private static PreparedStatement addTransaction; 
     private static PreparedStatement removeTransaction;
 
-    public static Transaction addTransaction(int productID, int priceSold, Timestamp timestamp, String seller, String location){
-        connection = DBConnection.getConnection(); 
+    public static Transaction addTransaction(int productID, String cls, String type, float priceSold, String seller, String location, int quantity){
+        connection = DBConnection.getConnection();
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         Transaction transaction = null; 
         try{
-            addTransaction = connection.prepareStatement("intsert into transactions values (?,?,?,?,?)");
+            addTransaction = connection.prepareStatement("insert into transactions values (?,?,?,?,?,?)");
             addTransaction.setInt(1, productID);
-            addTransaction.setInt(2, priceSold);
-            addTransaction.setTimestamp(3, timestamp); 
-            addTransaction.setString(4, seller);
-            addTransaction.setString(4,location);
-            addTransaction.executeQuery();
-            transaction = new Transaction(productID, priceSold, timestamp, seller, location);
+            addTransaction.setFloat(2, priceSold);
+            addTransaction.setTimestamp(3, currentTimestamp); 
+            addTransaction.setString(4, seller); 
+            addTransaction.setString(5,location);
+            addTransaction.setInt(6, quantity);
+            addTransaction.executeUpdate();
+            transaction = new Transaction(productID, priceSold, currentTimestamp, seller, location, quantity);
+            Product.removeProductFromInventory(cls, type, location, quantity);
         }
         catch(SQLException sqlException)
         {
@@ -68,7 +74,7 @@ public class Transaction {
         
     }
     
-    public int getPriceSold() {
+    public float getPriceSold() {
         return priceSold;
     }
 
@@ -79,7 +85,16 @@ public class Transaction {
     public String getSeller() {
         return seller;
     }
-    
-    
-    
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getLocation() {
+        return location;
+    }
 }
