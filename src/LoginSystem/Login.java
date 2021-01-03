@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import safari.lube.inventory.system.DBConnection;
-import safari.lube.inventory.system.MainGUI;
 
 /**
  *
@@ -21,21 +20,54 @@ public class Login {
     private final String username; 
     private final String password; 
     private final String access; 
+    private final String name; 
 
-    public Login(String username, String password, String access) {
+    public Login(String username, String password, String access, String name) {
         this.username = username;
         this.password = password;
         this.access = access;
+        this.name = name;
     }
     
     
     
     private static Connection connection;
+    private static PreparedStatement addLogin;
+    private static PreparedStatement removeLogin;
     private static PreparedStatement getAllLoginDetails; 
-    private static PreparedStatement checkLoginDetails;
     private static ResultSet resultSet; 
 
+    public static void addLogin(String username, String password, String access, String name){
+        connection = DBConnection.getConnection();
+        try{
+            
+            addLogin = connection.prepareStatement("insert into Login values (?,?,?,?)");
+            addLogin.setString(1, username);
+            addLogin.setString(2, password); 
+            addLogin.setString(3, access);
+            addLogin.setString(4, name);
+            addLogin.executeUpdate();
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
+    }
     
+    public static void removeLogin(String username){
+        connection = DBConnection.getConnection();
+        
+        try{
+            
+            removeLogin = connection.prepareStatement("delete from Login where username = ?");
+            removeLogin.setString(1, username);
+            removeLogin.executeUpdate();
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
+    }
 
     public static ArrayList<Login> getAllLoginDetails(){
         connection = DBConnection.getConnection();
@@ -45,7 +77,7 @@ public class Login {
            getAllLoginDetails = connection.prepareStatement("select * from login order by username"); 
            resultSet = getAllLoginDetails.executeQuery(); 
            while(resultSet.next()){
-               loginDetails.add(new Login(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3)));
+               loginDetails.add(new Login(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)));
            }
         }
         
@@ -57,21 +89,17 @@ public class Login {
         return loginDetails; 
     }
     
-    public static String checkLoginDetails(String username, String password){
+    public static Login checkLoginDetails(String username, String password){
         ArrayList<Login> loginDetails = getAllLoginDetails(); 
-        String access = null; 
+        Login currentLogin = null; 
         
         for(int i=0; i<loginDetails.size(); i++){
             if(username.equals(loginDetails.get(i).getUsername()) && password.equals(loginDetails.get(i).getUsername())){
-                if(loginDetails.get(i).getAccess().equals("Admin")){
-                    access = "Admin"; 
-                }
-                else if(loginDetails.get(i).getAccess().equals("Employee")){
-                    access = "Employee"; 
-                }
+                currentLogin = loginDetails.get(i);
+                break;
             }
         }
-       return access; 
+       return currentLogin; 
     }
 
     
@@ -86,5 +114,10 @@ public class Login {
     public String getAccess() {
         return access;
     }
+
+    public String getName() {
+        return name;
+    }
+    
     
 }

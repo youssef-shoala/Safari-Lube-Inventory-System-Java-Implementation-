@@ -30,7 +30,6 @@ public class LoginSys extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loginSysTestButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -40,19 +39,18 @@ public class LoginSys extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        loginSysTestButton.setText("Open Sesame");
-        loginSysTestButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginSysTestButtonActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setText("Safari Lube");
 
         jLabel2.setText("Username:");
 
         jLabel3.setText("Password:");
+
+        loginUsernameTextBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginUsernameTextBoxActionPerformed(evt);
+            }
+        });
 
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -81,11 +79,7 @@ public class LoginSys extends javax.swing.JDialog {
                             .addComponent(loginUsernameTextBox, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(160, 160, 160)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(loginSysTestButton)
-                        .addGap(175, 175, 175)))
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -103,31 +97,31 @@ public class LoginSys extends javax.swing.JDialog {
                     .addComponent(loginPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(loginButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addComponent(loginSysTestButton)
-                .addGap(117, 117, 117))
+                .addContainerGap(237, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loginSysTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginSysTestButtonActionPerformed
-        // TODO add your handling code here:
-        MainGUI.main(null);
-        this.setVisible(false);
-    }//GEN-LAST:event_loginSysTestButtonActionPerformed
-
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        String access = Login.checkLoginDetails(loginUsernameTextBox.getText(), loginPasswordField.getText()); 
-        
-        if(access.equals("Admin")){
+        Login currentLogin = Login.checkLoginDetails(loginUsernameTextBox.getText(), loginPasswordField.getText());
+        if(currentLogin != null){
             MainGUI.main(null);
-            this.setVisible(false);
-            //MainGUI.jPanel4.setVisible(false);
+            this.dispose();
+            MainGUI.setCurrentLogin(currentLogin);
+        }
+        else{
+            System.out.println("Your login details are incorrect");
+            loginUsernameTextBox.setText("");
+            loginPasswordField.setText("");
         }
         
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void loginUsernameTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginUsernameTextBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_loginUsernameTextBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,7 +171,6 @@ public class LoginSys extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField loginPasswordField;
-    private javax.swing.JButton loginSysTestButton;
     private javax.swing.JTextField loginUsernameTextBox;
     // End of variables declaration//GEN-END:variables
 }

@@ -81,10 +81,10 @@ public class Merchandise {
         connection = DBConnection.getConnection(); 
         Merchandise merchandise = null; 
         try{
-            addMerchandise = connection.prepareStatement("intsert into merchandise values (?,?)");
+            addMerchandise = connection.prepareStatement("insert into merchandise values (?,?)");
             addMerchandise.setString(1, cls);
             addMerchandise.setString(2, type);
-            addMerchandise.executeQuery();
+            addMerchandise.executeUpdate();
             merchandise = new Merchandise(cls, type);
         }
         catch(SQLException sqlException)
@@ -97,9 +97,9 @@ public class Merchandise {
     public static void removeMerchandise(String type){
         connection = DBConnection.getConnection(); 
         try{
-            removeMerchandise = connection.prepareStatement("remove from merchandise where type = ?");
+            removeMerchandise = connection.prepareStatement("delete from merchandise where type = ?");
             removeMerchandise.setString(1, type);
-            removeMerchandise.executeQuery();
+            removeMerchandise.executeUpdate();
         }
         catch(SQLException sqlException)
         {

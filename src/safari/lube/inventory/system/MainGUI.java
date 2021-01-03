@@ -5,12 +5,14 @@
  */
 package safari.lube.inventory.system;
 
+import LoginSystem.Login;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import java.awt.CardLayout; 
 
 /**
  *
@@ -21,6 +23,8 @@ public class MainGUI extends javax.swing.JDialog {
     /**
      * Creates new form MainGUI
      */
+    private static Login currentLogin; 
+    
     public MainGUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -57,6 +61,12 @@ public class MainGUI extends javax.swing.JDialog {
         transactionsQuantityTextBox = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
         transactionsSearchButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        inventoryJTable = new javax.swing.JTable();
+        inventoryRefreshButton = new javax.swing.JButton();
+        inventoryLocationComboBox = new javax.swing.JComboBox<>();
+        jLabel27 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         addProductIDTextBox = new javax.swing.JTextField();
@@ -81,25 +91,53 @@ public class MainGUI extends javax.swing.JDialog {
         jLabel17 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         addProductQuantityTextBox = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        inventoryJTable = new javax.swing.JTable();
-        inventoryRefreshButton = new javax.swing.JButton();
+        addProductAddMerchandiseButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        mainJPanel = new javax.swing.JPanel();
+        grossProfitJPanel = new javax.swing.JPanel();
+        grossProfitJLabel = new javax.swing.JLabel();
+        grossProfitMonthComboBox = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        grossProfitGetExcelButton = new javax.swing.JButton();
+        netProfitJPanel = new javax.swing.JPanel();
+        netProfitJLabel = new javax.swing.JLabel();
+        netProfitGetExcelButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        netProfitJTable = new javax.swing.JTable();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jButton4 = new javax.swing.JButton();
+        netProfitNameTextBox = new javax.swing.JTextField();
+        netProfitAmountTextBox = new javax.swing.JTextField();
+        netProfitAddExpenseButton = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
+        netProfitMonthComboBox = new javax.swing.JComboBox<>();
+        netProfitRemoveExpenseButton = new javax.swing.JButton();
+        netProfitExpenseNamesComboBox = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        netWorthJPanel = new javax.swing.JPanel();
+        netWorthJLabel = new javax.swing.JLabel();
+        netWorthGetExcelButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        netWorthJTable = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
+        calculateOptionsComboBox = new javax.swing.JComboBox<>();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        accountSettingsJTable = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        accountSettingsAddAccountUsernameTextBox = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        accountSettingsAddAccountPasswordTextBox = new javax.swing.JTextField();
+        jLabel31 = new javax.swing.JLabel();
+        accountSettingsAddAccountAccessComboBox = new javax.swing.JComboBox<>();
+        jLabel32 = new javax.swing.JLabel();
+        accountSettingsAddAccountNameTextBox = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        accountSettingsRemoveAccountUsernameComboBox = new javax.swing.JComboBox<>();
+        accountSettingsAddAccountButton = new javax.swing.JButton();
+        accountSettingsRemoveAccountButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -167,7 +205,7 @@ public class MainGUI extends javax.swing.JDialog {
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addComponent(jLabel19)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
                                         .addComponent(jLabel23))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
@@ -194,13 +232,13 @@ public class MainGUI extends javax.swing.JDialog {
                                 .addComponent(transactionsPriceSoldTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel26)))
-                        .addGap(0, 45, Short.MAX_VALUE)))
+                        .addGap(0, 109, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(93, 93, 93)
                     .addComponent(filler4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(650, Short.MAX_VALUE)))
+                    .addContainerGap(778, Short.MAX_VALUE)))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +275,7 @@ public class MainGUI extends javax.swing.JDialog {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
-                        .addComponent(filler3, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                        .addComponent(filler3, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -247,10 +285,66 @@ public class MainGUI extends javax.swing.JDialog {
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(29, 29, 29)
                     .addComponent(filler4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(249, Short.MAX_VALUE)))
+                    .addContainerGap(469, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Transactions", jPanel5);
+
+        //inventoryJTable.setRowSorter(new TableRowSorter<DefaultTableModel>((DefaultTableModel)inventoryJTable.getModel()));
+        inventoryJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Class", "Type", "Quantity", "Date Added"
+            }
+        ));
+        jScrollPane1.setViewportView(inventoryJTable);
+
+        inventoryRefreshButton.setText("Search");
+        inventoryRefreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inventoryRefreshButtonActionPerformed(evt);
+            }
+        });
+
+        inventoryLocationComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Maadi", "Rehab" }));
+
+        jLabel27.setText("Location:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(inventoryRefreshButton)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel27)
+                        .addGap(18, 18, 18)
+                        .addComponent(inventoryLocationComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inventoryLocationComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(inventoryRefreshButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61))
+        );
+
+        jTabbedPane1.addTab("Inventory", jPanel1);
 
         jLabel2.setText("Product ID: ");
 
@@ -302,61 +396,71 @@ public class MainGUI extends javax.swing.JDialog {
 
         jLabel20.setText("Quantity:");
 
+        addProductAddMerchandiseButton.setText("Add Merchandise");
+        addProductAddMerchandiseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProductAddMerchandiseButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(addProductScanBarcodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(57, 57, 57)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(addProductScanBarcodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addGap(57, 57, 57)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(addProductSearchIDButton)
-                            .addComponent(addProductIDTextBox, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
-                            .addComponent(addProductClassComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(addProductTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(addProductPriceBoughtTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel17))))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(addProductSearchIDButton)
+                                    .addComponent(addProductIDTextBox, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                                    .addComponent(addProductClassComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(addProductTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(addProductPriceBoughtTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel17))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel7)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel20)
+                                        .addComponent(jLabel9)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(addProductQuantityTextBox, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(addProductPriceToSellTextBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel16)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel20)
-                                .addComponent(jLabel9)))
+                        .addComponent(addProductAddMerchandiseButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(addProductQuantityTextBox, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addProductPriceToSellTextBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel16)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 311, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(addProductAddToInventoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
-                    .addComponent(addProductLocationComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 320, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(addProductAddToInventoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                            .addComponent(addProductLocationComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(93, 93, 93)
                     .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(650, Short.MAX_VALUE)))
+                    .addContainerGap(778, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -400,188 +504,415 @@ public class MainGUI extends javax.swing.JDialog {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel20)
                             .addComponent(addProductQuantityTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addProductLocationComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(addProductAddToInventoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addProductAddMerchandiseButton)))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(29, 29, 29)
                     .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(249, Short.MAX_VALUE)))
+                    .addContainerGap(469, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Add Product", jPanel2);
 
-        //inventoryJTable.setRowSorter(new TableRowSorter<DefaultTableModel>((DefaultTableModel)inventoryJTable.getModel()));
-        inventoryJTable.setModel(new javax.swing.table.DefaultTableModel(
+        mainJPanel.setLayout(new java.awt.CardLayout());
+
+        grossProfitJLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        grossProfitJLabel.setText("Gross Profit: ");
+
+        grossProfitMonthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        grossProfitMonthComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grossProfitMonthComboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Month:");
+
+        grossProfitGetExcelButton.setText("Get Data in Excel");
+
+        javax.swing.GroupLayout grossProfitJPanelLayout = new javax.swing.GroupLayout(grossProfitJPanel);
+        grossProfitJPanel.setLayout(grossProfitJPanelLayout);
+        grossProfitJPanelLayout.setHorizontalGroup(
+            grossProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(grossProfitJPanelLayout.createSequentialGroup()
+                .addGroup(grossProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(grossProfitJPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(grossProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(grossProfitJPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(18, 18, 18)
+                                .addComponent(grossProfitMonthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(grossProfitJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(grossProfitJPanelLayout.createSequentialGroup()
+                        .addGap(353, 353, 353)
+                        .addComponent(grossProfitGetExcelButton)))
+                .addContainerGap(389, Short.MAX_VALUE))
+        );
+        grossProfitJPanelLayout.setVerticalGroup(
+            grossProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(grossProfitJPanelLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(grossProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(grossProfitMonthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(68, 68, 68)
+                .addComponent(grossProfitJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 359, Short.MAX_VALUE)
+                .addComponent(grossProfitGetExcelButton)
+                .addContainerGap())
+        );
+
+        mainJPanel.add(grossProfitJPanel, "grossProfitJPanelCard");
+
+        netProfitJLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        netProfitJLabel.setText("Net Profit: ");
+
+        netProfitGetExcelButton.setText("Get Data in Excel");
+
+        netProfitJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Name", "Amount"
+            }
+        ));
+        jScrollPane2.setViewportView(netProfitJTable);
+
+        jLabel14.setText("Name:");
+
+        jLabel15.setText("Amount:");
+
+        netProfitAddExpenseButton.setText("Add Expense");
+        netProfitAddExpenseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                netProfitAddExpenseButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel28.setText("Month:");
+
+        netProfitMonthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        netProfitMonthComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                netProfitMonthComboBoxActionPerformed(evt);
+            }
+        });
+
+        netProfitRemoveExpenseButton.setText("Remove Expense");
+        netProfitRemoveExpenseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                netProfitRemoveExpenseButtonActionPerformed(evt);
+            }
+        });
+
+        netProfitExpenseNamesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel11.setText("Name:");
+
+        javax.swing.GroupLayout netProfitJPanelLayout = new javax.swing.GroupLayout(netProfitJPanel);
+        netProfitJPanel.setLayout(netProfitJPanelLayout);
+        netProfitJPanelLayout.setHorizontalGroup(
+            netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                        .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                .addGap(328, 328, 328)
+                                .addComponent(netProfitGetExcelButton))
+                            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel28)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(netProfitMonthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                        .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, netProfitJPanelLayout.createSequentialGroup()
+                                                .addComponent(netProfitNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                                .addComponent(jLabel14)
+                                                .addGap(241, 241, 241)))
+                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                        .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                                .addGap(130, 130, 130)
+                                                .addComponent(netProfitAmountTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                                                .addComponent(jLabel11)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(netProfitExpenseNamesComboBox, 0, 508, Short.MAX_VALUE)))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(netProfitRemoveExpenseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(netProfitAddExpenseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(111, 111, 111)))
+                .addContainerGap())
+            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(netProfitJLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        netProfitJPanelLayout.setVerticalGroup(
+            netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(netProfitJPanelLayout.createSequentialGroup()
+                .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel28)
+                    .addComponent(netProfitMonthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(netProfitAddExpenseButton)
+                    .addComponent(netProfitAmountTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(netProfitNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(netProfitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(netProfitRemoveExpenseButton)
+                    .addComponent(netProfitExpenseNamesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(netProfitJLabel)
+                .addGap(37, 37, 37)
+                .addComponent(netProfitGetExcelButton)
+                .addContainerGap())
+        );
+
+        mainJPanel.add(netProfitJPanel, "netProfitJPanelCard");
+
+        netWorthJLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        netWorthJLabel.setText("Net Worth:");
+
+        netWorthGetExcelButton.setText("Get Data in Excel");
+
+        netWorthJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Class", "Type", "ID", "Price Bought", "Price To Sell", "Date Added", "Location", "Quantity"
+                "Class", "Type", "Quantity", "Location", "Price Bought", "Date Added"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class
-            };
+        ));
+        jScrollPane3.setViewportView(netWorthJTable);
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(inventoryJTable);
+        javax.swing.GroupLayout netWorthJPanelLayout = new javax.swing.GroupLayout(netWorthJPanel);
+        netWorthJPanel.setLayout(netWorthJPanelLayout);
+        netWorthJPanelLayout.setHorizontalGroup(
+            netWorthJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(netWorthJPanelLayout.createSequentialGroup()
+                .addGroup(netWorthJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(netWorthJPanelLayout.createSequentialGroup()
+                        .addGap(329, 329, 329)
+                        .addComponent(netWorthGetExcelButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
+            .addGroup(netWorthJPanelLayout.createSequentialGroup()
+                .addGap(205, 205, 205)
+                .addComponent(netWorthJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(314, Short.MAX_VALUE))
+        );
+        netWorthJPanelLayout.setVerticalGroup(
+            netWorthJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, netWorthJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(netWorthJLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                .addComponent(netWorthGetExcelButton)
+                .addContainerGap())
+        );
 
-        inventoryRefreshButton.setText("Refresh");
-        inventoryRefreshButton.addActionListener(new java.awt.event.ActionListener() {
+        mainJPanel.add(netWorthJPanel, "netWorthJPanelCard");
+
+        jLabel12.setText("Calculate:");
+
+        calculateOptionsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gross Profit", "Net Profit", "Net Worth" }));
+        calculateOptionsComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inventoryRefreshButtonActionPerformed(evt);
+                calculateOptionsComboBoxActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(inventoryRefreshButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inventoryRefreshButton)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Inventory", jPanel1);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 791, Short.MAX_VALUE)
+            .addComponent(mainJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(246, 246, 246)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(calculateOptionsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 526, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(calculateOptionsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(mainJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Calculate Profits", jPanel4);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 19)); // NOI18N
-        jLabel10.setText("Add Merchandise:");
+        accountSettingsJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        setAccountJTable();
+        jScrollPane4.setViewportView(accountSettingsJTable);
 
-        jLabel11.setText("Class:");
+        jLabel13.setText("Add Account:");
 
-        jComboBox1.setModel(new DefaultComboBoxModel<String>(Merchandise.getMerchandiseClasses().toArray(new String[0])));
+        jLabel29.setText("Username:");
 
-        jButton2.setText("Create Class?");
+        jLabel30.setText("Password:");
 
-        jLabel12.setText("Type:");
+        accountSettingsAddAccountPasswordTextBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accountSettingsAddAccountPasswordTextBoxActionPerformed(evt);
+            }
+        });
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 19)); // NOI18N
-        jLabel13.setText("Remove Merchandise:");
+        jLabel31.setText("Access:");
 
-        jButton3.setText("Add Merchandise");
+        setAccountJTable();
 
-        jLabel14.setText("Class:");
+        jLabel32.setText("Name:");
 
-        jLabel15.setText("Type:");
+        jLabel33.setText("Remove Account:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel34.setText("Username:");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        setAccountJTable();
 
-        jButton4.setText("Remove Merchandise");
+        accountSettingsAddAccountButton.setText("Add");
+        accountSettingsAddAccountButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accountSettingsAddAccountButtonActionPerformed(evt);
+            }
+        });
+
+        accountSettingsRemoveAccountButton.setText("Remove");
+        accountSettingsRemoveAccountButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accountSettingsRemoveAccountButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel13))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addContainerGap()
+                        .addComponent(jLabel33))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel15)
-                                    .addComponent(jLabel14))
+                                    .addComponent(jLabel29)
+                                    .addComponent(accountSettingsAddAccountUsernameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jButton4)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                    .addComponent(jLabel30)
+                                    .addComponent(accountSettingsAddAccountPasswordTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel31)
+                                    .addComponent(accountSettingsAddAccountAccessComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel32)
+                                    .addComponent(accountSettingsAddAccountNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(accountSettingsAddAccountButton))))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(accountSettingsRemoveAccountButton)
+                    .addComponent(jLabel34)
+                    .addComponent(accountSettingsRemoveAccountUsernameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addGap(39, 39, 39)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addComponent(jLabel13)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel29)
+                    .addComponent(jLabel30)
+                    .addComponent(jLabel31)
+                    .addComponent(jLabel32))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(accountSettingsAddAccountUsernameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountSettingsAddAccountPasswordTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountSettingsAddAccountAccessComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountSettingsAddAccountNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addComponent(accountSettingsAddAccountButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel33)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(accountSettingsRemoveAccountUsernameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(accountSettingsRemoveAccountButton)
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Add/Remove Merchandise", jPanel3);
+        jTabbedPane1.addTab("Account Settings", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -606,17 +937,42 @@ public class MainGUI extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        hidePanels(currentLogin.getAccess());
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    public static Login getCurrentLogin() {
+        return currentLogin;
+    }
 
+    public static void setCurrentLogin(Login currentLogin) {
+        MainGUI.currentLogin = currentLogin;
+    }
+    
+    public static void hidePanels(String access){
+        if(access.equals("Employee")){
+            jTabbedPane1.remove(4);
+            jTabbedPane1.remove(3);
+            jTabbedPane1.remove(2);
+        }   
+        //TO ADD NEW ACCESS TYPE: else if(access.equals("STRINGACCESSNAME")){}
+    }
+    
+    
     private void transactionsAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionsAddButtonActionPerformed
         // TODO add your handling code here:
+        float priceSold; 
+        if(transactionsPriceSoldTextBox.getText()==""){
+            
+        }
+        
         Transaction.addTransaction(parseInt(transactionsProductIDTextBox.getText()), 
                                     (String)transactionsClassComboBox.getSelectedItem(), 
                                     (String)transactionsTypeComboBox.getSelectedItem(), 
                                     Float.parseFloat(transactionsPriceSoldTextBox.getText()), 
                                     //implement with login system later
-                                    "Seller 1", 
+                                    getCurrentLogin().getName(), 
                                     (String)transactionsLocationComboBox.getSelectedItem(), 
                                     parseInt(transactionsQuantityTextBox.getText()));
         
@@ -652,16 +1008,16 @@ public class MainGUI extends javax.swing.JDialog {
 
     private void inventoryRefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryRefreshButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = new DefaultTableModel(new String[]{"Class", "Type", "ID", "Price Bought", "Price To Sell", "Date Added", "Location"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Class", "Type",  "Quantity", "Date Added"}, 0);
         ArrayList<Product> products = Product.getInventoryByDate();
         for (int i = 0; i < products.size(); i++) {
-            model.addRow(new Object[]{products.get(i).getCls(),
-                products.get(i).getType(),
-                products.get(i).getProductID(),
-                products.get(i).getPriceBought(),
-                products.get(i).getPriceSold(),
-                products.get(i).getDateAdded(),
-                products.get(i).getLocation()});
+            if(products.get(i).getLocation().equals((String)inventoryLocationComboBox.getSelectedItem())){
+                model.addRow(new Object[]{products.get(i).getProductID(),
+                                          products.get(i).getCls(),
+                                          products.get(i).getType(),
+                                          products.get(i).getQuantity(),
+                                          products.get(i).getDateAdded()});
+            }
         }
         inventoryJTable.setModel(model);
     }//GEN-LAST:event_inventoryRefreshButtonActionPerformed
@@ -675,6 +1031,137 @@ public class MainGUI extends javax.swing.JDialog {
         transactionsTypeComboBox.setModel(new DefaultComboBoxModel<String>(merchandiseTypes.toArray(new String[0])));
     }//GEN-LAST:event_transactionsClassComboBoxActionPerformed
 
+    private void addProductAddMerchandiseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductAddMerchandiseButtonActionPerformed
+        // TODO add your handling code here:
+        AddMerchandise.main(null);
+    }//GEN-LAST:event_addProductAddMerchandiseButtonActionPerformed
+
+    private void calculateOptionsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateOptionsComboBoxActionPerformed
+        // TODO add your handling code here:
+        String selectedOption = (String)calculateOptionsComboBox.getSelectedItem();
+        CardLayout card = (CardLayout)mainJPanel.getLayout();
+        //card.show(mainJPanel, selectedOption);
+        
+        if(selectedOption.equals("Gross Profit")){
+            card.show(mainJPanel, "grossProfitJPanelCard");
+        }
+        else if(selectedOption.equals("Net Profit")){
+            card.show(mainJPanel, "netProfitJPanelCard");
+            setNetProfitJTable();
+        }
+        else if(selectedOption.equals("Net Worth")){
+            card.show(mainJPanel, "netWorthJPanelCard");
+            setNetWorthJTable();
+        } 
+        
+        
+        
+    }//GEN-LAST:event_calculateOptionsComboBoxActionPerformed
+
+    private void grossProfitMonthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grossProfitMonthComboBoxActionPerformed
+        // TODO add your handling code here:
+        float grossProfit = Transaction.getMonthsGrossProfit((String)grossProfitMonthComboBox.getSelectedItem());
+        String grossProfitLabel = String.format("Gross Profit: %.2f LE", grossProfit);
+        grossProfitJLabel.setText(grossProfitLabel);
+    }//GEN-LAST:event_grossProfitMonthComboBoxActionPerformed
+
+    private void netProfitMonthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_netProfitMonthComboBoxActionPerformed
+        // TODO add your handling code here:
+        setNetProfitJTable();
+    }//GEN-LAST:event_netProfitMonthComboBoxActionPerformed
+
+    private void netProfitAddExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_netProfitAddExpenseButtonActionPerformed
+        // TODO add your handling code here:
+        Expenses.addExpense(netProfitNameTextBox.getText(), Float.parseFloat(netProfitAmountTextBox.getText()), (String)netProfitMonthComboBox.getSelectedItem());
+        setNetProfitJTable();
+    }//GEN-LAST:event_netProfitAddExpenseButtonActionPerformed
+
+    private void netProfitRemoveExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_netProfitRemoveExpenseButtonActionPerformed
+        // TODO add your handling code here:
+        Expenses.removeExpense((String)netProfitExpenseNamesComboBox.getSelectedItem());
+        setNetProfitJTable();
+    }//GEN-LAST:event_netProfitRemoveExpenseButtonActionPerformed
+
+    private void accountSettingsAddAccountPasswordTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountSettingsAddAccountPasswordTextBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_accountSettingsAddAccountPasswordTextBoxActionPerformed
+
+    private void accountSettingsAddAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountSettingsAddAccountButtonActionPerformed
+        // TODO add your handling code here:
+        Login.addLogin(accountSettingsAddAccountUsernameTextBox.getText(),
+                       accountSettingsAddAccountPasswordTextBox.getText(),
+                       (String)accountSettingsAddAccountAccessComboBox.getSelectedItem(),
+                       accountSettingsAddAccountNameTextBox.getText());
+        setAccountJTable();
+    }//GEN-LAST:event_accountSettingsAddAccountButtonActionPerformed
+
+    private void accountSettingsRemoveAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountSettingsRemoveAccountButtonActionPerformed
+        // TODO add your handling code here:
+        if(!getCurrentLogin().getUsername().equals((String)accountSettingsRemoveAccountUsernameComboBox.getSelectedItem())){
+            Login.removeLogin((String)accountSettingsRemoveAccountUsernameComboBox.getSelectedItem());
+        }
+        
+        setAccountJTable();
+    }//GEN-LAST:event_accountSettingsRemoveAccountButtonActionPerformed
+    
+    private void setAccountJTable(){
+        DefaultTableModel model = new DefaultTableModel(new String[]{"Username", "Password", "Access", "Name"}, 0);
+        ArrayList<Login> allLoginDetails = Login.getAllLoginDetails();
+        ArrayList<String> allLoginUsernames = new ArrayList<>();
+        ArrayList<String> allAccessVariables = new ArrayList<>();
+        for(int i=0; i<allLoginDetails.size(); i++){
+            model.addRow(new Object[]{allLoginDetails.get(i).getUsername(),
+                                      allLoginDetails.get(i).getPassword(),
+                                      allLoginDetails.get(i).getAccess(),
+                                      allLoginDetails.get(i).getName()});
+            
+            if(!getCurrentLogin().getUsername().equals(allLoginDetails.get(i).getUsername())){
+                            allLoginUsernames.add(allLoginDetails.get(i).getUsername());
+            }
+            
+            if(!allAccessVariables.contains(allLoginDetails.get(i).getAccess())){
+                allAccessVariables.add(allLoginDetails.get(i).getAccess());
+            }
+        }
+        accountSettingsJTable.setModel(model);
+        accountSettingsRemoveAccountUsernameComboBox.setModel(new DefaultComboBoxModel<String>(allLoginUsernames.toArray(new String[0])));
+        accountSettingsAddAccountAccessComboBox.setModel(new DefaultComboBoxModel<>(allAccessVariables.toArray(new String[0])));
+    }
+    
+    
+    private void setNetWorthJTable(){
+        DefaultTableModel model = new DefaultTableModel(new String[]{"Class", "Type", "Quantity", "Location", "Price Bought", "Date Added"}, 0);
+        ArrayList<Product> inInventory = Product.getInventoryByDate();
+        float netWorth = 0; 
+        for (int i = 0; i < inInventory.size(); i++) {
+            model.addRow(new Object[]{inInventory.get(i).getCls(),
+                                      inInventory.get(i).getType(),
+                                      inInventory.get(i).getQuantity(), 
+                                      inInventory.get(i).getLocation(), 
+                                      inInventory.get(i).getPriceBought(), 
+                                      inInventory.get(i).getDateAdded()});
+            netWorth += (inInventory.get(i).getQuantity() * inInventory.get(i).getPriceBought());
+        }
+        netWorthJTable.setModel(model);
+        String netProfitLabel = String.format("Net Worth: %.2f LE", netWorth);
+        netWorthJLabel.setText(netProfitLabel);
+    }
+    
+    private void setNetProfitJTable(){
+        DefaultTableModel model = new DefaultTableModel(new String[]{"Name", "Amount"}, 0);
+        ArrayList<Expenses> expenses = Expenses.getAllExpensesByMonth((String)netProfitMonthComboBox.getSelectedItem());
+        ArrayList<String> expenseNames = new ArrayList<>();
+        for (int i = 0; i < expenses.size(); i++) {
+            model.addRow(new Object[]{expenses.get(i).getName(),
+                                      expenses.get(i).getAmount(),});
+            expenseNames.add(expenses.get(i).getName());
+        }
+        netProfitJTable.setModel(model);
+        String netProfitLabel = String.format("Net Profit: %.2f LE", Transaction.getMonthsNetProfit((String)netProfitMonthComboBox.getSelectedItem()));
+        netProfitJLabel.setText(netProfitLabel);
+        netProfitExpenseNamesComboBox.setModel(new DefaultComboBoxModel<String>(expenseNames.toArray(new String[0])));
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -718,6 +1205,15 @@ public class MainGUI extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> accountSettingsAddAccountAccessComboBox;
+    private javax.swing.JButton accountSettingsAddAccountButton;
+    private javax.swing.JTextField accountSettingsAddAccountNameTextBox;
+    private javax.swing.JTextField accountSettingsAddAccountPasswordTextBox;
+    private javax.swing.JTextField accountSettingsAddAccountUsernameTextBox;
+    private javax.swing.JTable accountSettingsJTable;
+    private javax.swing.JButton accountSettingsRemoveAccountButton;
+    private javax.swing.JComboBox<String> accountSettingsRemoveAccountUsernameComboBox;
+    private javax.swing.JButton addProductAddMerchandiseButton;
     private javax.swing.JButton addProductAddToInventoryButton;
     private javax.swing.JComboBox<String> addProductClassComboBox;
     private javax.swing.JTextField addProductIDTextBox;
@@ -728,18 +1224,18 @@ public class MainGUI extends javax.swing.JDialog {
     private javax.swing.JButton addProductScanBarcodeButton;
     private javax.swing.JButton addProductSearchIDButton;
     private javax.swing.JComboBox<String> addProductTypeComboBox;
+    private javax.swing.JComboBox<String> calculateOptionsComboBox;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
+    private javax.swing.JButton grossProfitGetExcelButton;
+    private javax.swing.JLabel grossProfitJLabel;
+    private javax.swing.JPanel grossProfitJPanel;
+    private javax.swing.JComboBox<String> grossProfitMonthComboBox;
     private javax.swing.JTable inventoryJTable;
+    private javax.swing.JComboBox<String> inventoryLocationComboBox;
     private javax.swing.JButton inventoryRefreshButton;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -759,7 +1255,15 @@ public class MainGUI extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -769,11 +1273,28 @@ public class MainGUI extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private static javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    public static javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel mainJPanel;
+    private javax.swing.JButton netProfitAddExpenseButton;
+    private javax.swing.JTextField netProfitAmountTextBox;
+    private javax.swing.JComboBox<String> netProfitExpenseNamesComboBox;
+    private javax.swing.JButton netProfitGetExcelButton;
+    private javax.swing.JLabel netProfitJLabel;
+    private javax.swing.JPanel netProfitJPanel;
+    private javax.swing.JTable netProfitJTable;
+    private javax.swing.JComboBox<String> netProfitMonthComboBox;
+    private javax.swing.JTextField netProfitNameTextBox;
+    private javax.swing.JButton netProfitRemoveExpenseButton;
+    private javax.swing.JButton netWorthGetExcelButton;
+    private javax.swing.JLabel netWorthJLabel;
+    private javax.swing.JPanel netWorthJPanel;
+    private javax.swing.JTable netWorthJTable;
     private javax.swing.JButton transactionsAddButton;
     private javax.swing.JComboBox<String> transactionsClassComboBox;
     private javax.swing.JComboBox<String> transactionsLocationComboBox;

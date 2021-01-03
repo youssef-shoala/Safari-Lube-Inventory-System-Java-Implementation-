@@ -110,9 +110,10 @@ public class Product {
         return product;
     }
     
-    public static void removeProductFromInventory(String cls, String type, String location, int quantity){
+    public static ArrayList<Product> removeProductFromInventory(String cls, String type, String location, int quantity){
         connection = DBConnection.getConnection(); 
         ArrayList<Product> inventoryByDate = getInventoryByDate();
+        ArrayList<Product> productsRemoved = new ArrayList<>();
         Product productToRemove = null; 
         
         for(int i=0; i<inventoryByDate.size(); i++){
@@ -122,14 +123,13 @@ public class Product {
             }
         }   
         
-        int quantityInInventory = productToRemove.getQuantity();
-        int idOfProduct = productToRemove.getProductID();
-        
         if(productToRemove != null){
+            
+            int quantityInInventory = productToRemove.getQuantity();
+            int idOfProduct = productToRemove.getProductID();
+            
             if(quantityInInventory > quantity){
-                //reduce quantity
                 try{
-                    //update inventory set quantity = quantity-? where type = ? and price_bought = ? and location = ?
                     removeProduct = connection.prepareStatement("update inventory set quantity = quantity - ? where ID = ? ");
                     removeProduct.setInt(1, quantity); 
                     removeProduct.setInt(2, idOfProduct);
@@ -139,11 +139,13 @@ public class Product {
                 {
                     sqlException.printStackTrace();
                 }
+                productToRemove.setQuantity(quantity);
+                productsRemoved.add(productToRemove);
             }
 
-            else if(quantityInInventory == quantity){
+            else if(quantityInInventory <= quantity){
                 try{
-                    removeProduct = connection.prepareStatement("remove from inventory where id = ?");
+                    removeProduct = connection.prepareStatement("delete from inventory where id = ?");
                     removeProduct.setInt(1, idOfProduct);
                     removeProduct.executeUpdate(); 
                 }
@@ -151,15 +153,14 @@ public class Product {
                 {
                     sqlException.printStackTrace();
                 }
-            }
-
-            else{
-                System.out.println("Not enough quantity in inventory");
+                productsRemoved.add(productToRemove);
+                productsRemoved.addAll(removeProductFromInventory( cls,  type,  location,  quantity-quantityInInventory));
             }
         }
         else{
                 System.out.println("This doesnt exist in inventory");
             }
+        return productsRemoved;
     }
     
     public static ArrayList<Product> getInventoryByDate(){
@@ -210,8 +211,10 @@ public class Product {
         }
         return allProductsOfType; 
     }
-    
-    
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
     
     public String getLocation() {
         return location;
